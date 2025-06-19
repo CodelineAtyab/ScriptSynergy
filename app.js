@@ -1,6 +1,6 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const complaintRoutes = require('./routes/complaint');
+const { router: userRoutes } = require('./routes/user');
 const cors = require('cors');
 
 const app = express();
@@ -13,7 +13,10 @@ app.use(cors());
 app.use(express.json());
 
 // Use complaint routes
-app.use('/complaint', complaintRoutes);
+app.use('/complaints', complaintRoutes);
+
+// Use complaint routes
+app.use('/users', userRoutes);
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
