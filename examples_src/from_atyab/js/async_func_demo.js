@@ -17,33 +17,41 @@
 // console.log(`I am already here!!! ${ret}`);
 // console.log(`I am already here!!! ${secRet}`);
 
-fetch("http://localhost:9999/users")
-.then(response => response.json())
-.then(JSONresponse => console.log(JSONresponse))
-.then(whatever => console.log(whatever))
-.then(whatever => console.log(whatever))
-.catch((e) => {console.log(e);});
+// fetch("http://localhost:9999/users")
+// .then(response => response.json())
+// .then(JSONresponse => console.log(JSONresponse))
+// .then(whatever => console.log(whatever))
+// .then(whatever => console.log(whatever))
+// .catch((e) => {console.log(e);});
 
-fetch("http://localhost:9999/complaints")
-.then(response => response.json())
-.then(JSONresponse => console.log(JSONresponse))
-.catch((e) => {console.log(e);});
+// fetch("http://localhost:9999/complaints")
+// .then(response => response.json())
+// .then(JSONresponse => console.log(JSONresponse))
+// .catch((e) => {console.log(e);});
 
-fetch("https://www.swapi.tech/api/people", {method: "GET"})
-.then(response => response.json())
-.then(JSONresponse => console.log(JSONresponse))
-.catch((e) => {console.log(e);});
+// fetch("https://www.swapi.tech/api/people", {method: "GET"})
+// .then(response => response.json())
+// .then(JSONresponse => console.log(JSONresponse))
+// .catch((e) => {console.log(e);});
 
-const announceLater = async (msg) => {
-  return new Promise((resolve, rejected) => {
-    if (true) {
-      resolve(msg);
-    } else {
-      rejected("Something happened!");
-    }
-  });
-};
+// const announceLater = async (msg) => {
+//   return new Promise((resolve, rejected) => {
+//     if (true) {
+//       resolve(msg);
+//     } else {
+//       rejected("Something happened!");
+//     }
+//   });
+// };
 
-announceLater("I am testing my async function").then((data) => {console.log(data);});
+// announceLater("I am testing my async function").then((data) => {console.log(data);});
+
+async function getUsers() {
+  const response = await fetch("http://localhost:9999/users");
+  const JSONresponse = await response.json();
+  console.log(JSONresponse);
+}
+
+getUsers();
 
 console.log(`Done Sending Both Requests`);
