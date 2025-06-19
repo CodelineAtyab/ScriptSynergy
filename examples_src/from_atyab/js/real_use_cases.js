@@ -17,13 +17,44 @@ const userNames = [
   "Qais Al-Ghafri"
 ];
 
-let searchText = "al kindi";  // "Ahmed Al-Balushi" -> "ahmed al-balushi" -> "ahmed al balushi"
-const searchResults = userNames.filter((currentName) => {
-  const currNameLowerWithoutSymbols = currentName.toLowerCase().replace("-", " ");
-  const textToSearch = searchText.toLowerCase().replace("-", " ");
-  // console.log("Name in lowercase: " + "'" + currNameLowerWithoutSymbols + "'" + " - " + "Search Text in lowercase: " + "'" + textToSearch + "'")  // Template Literal
-  // console.log(`Name in lowercase '${currNameLowerWithoutSymbols}' Search Text in lowercase: '${textToSearch}'`);
-  return currNameLowerWithoutSymbols.includes(textToSearch);
+// Transform the list
+const allNamesList = userNames.map((currentName) => {
+  const newListItemObj = document.createElement("li");
+  newListItemObj.innerHTML = currentName;
+  return newListItemObj;
 });
 
-console.log(searchResults);
+console.log(allNamesList);
+
+allNamesList.forEach((currentLiWithName) => {
+  const candidatesNamesUlObj = document.getElementById("candidatesNames");
+
+  // Make newListItemObj the child of candidatesNamesUlObj
+  candidatesNamesUlObj.appendChild(currentLiWithName);
+});
+
+const nameInputObj = document.getElementById("nameSearchField");
+
+// On Every Input Call My Function
+nameInputObj.addEventListener("input", (event) => {
+  // Every Object Should Be Visible in the Start
+  allNamesList.forEach((currFilteredNameListObj) => {
+    currFilteredNameListObj.hidden = false;
+  });
+
+  console.log(event.target.value);
+  const textToSearch = event.target.value.toLowerCase().replaceAll("-", "").replaceAll(" ", "");
+  let filteredNamesToHide = null;
+
+  if (textToSearch !== "") {
+    filteredNamesToHide = allNamesList.filter((element) => {
+      return !element.innerHTML.toLowerCase().replaceAll("-", "").replaceAll(" ", "").includes(textToSearch);
+    });
+  }
+  if (filteredNamesToHide != null) {
+    filteredNamesToHide.forEach((currFilteredNameListObj) => {
+      currFilteredNameListObj.hidden = true;
+    });
+  }
+  console.log(filteredNamesToHide);
+});
