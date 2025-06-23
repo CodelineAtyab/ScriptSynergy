@@ -5,8 +5,6 @@ fetch("http://localhost:9999/users")
   .then((response) => response.json())
   .then((jsonResponseList) => {
     jsonResponseList.forEach((currUserObj) => {
-      console.log(currUserObj);
-      
       const newOption = document.createElement("option");
       newOption.textContent = currUserObj.username;
       newOption.value = currUserObj.email;
