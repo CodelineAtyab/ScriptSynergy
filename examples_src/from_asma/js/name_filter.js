@@ -16,7 +16,7 @@
 
 const names = [
   "Ahmed Al-Jabri",
-  "Fatima Al-Harthy", 
+  "Fatima Al-Harthy",
   "Omar Al-Maskari",
   "Laila Al-Busaidi",
   "Khalid Al-Hinai",
@@ -36,13 +36,13 @@ const names = [
   "Hassan Al-Zadjali",
   "Rania Al-Ajmi",
   "John Smith",
-    "Jane Doe",
-    "Robert Johnson",
-    "Emily Williams",
-    "Michael Brown",
-    "Sarah Davis",
-    "David Miller",
-    "Jessica Wilson"
+  "Jane Doe",
+  "Robert Johnson",
+  "Emily Williams",
+  "Michael Brown",
+  "Sarah Davis",
+  "David Miller",
+  "Jessica Wilson"
 ];
 
 //this creates a list of names that contain "al" in them
@@ -51,57 +51,68 @@ const names = [
 // const filteredNames = names.filter(function(name) {
 //   return name.toLowerCase().includes("al");
 // });
+// var requestOptions = {
+//   method: 'GET',
+//   redirect: 'follow'
+// };
+// This fetch request is to get the names from the API
+// fetch("http://192.168.100.51:9999/users", requestOptions)
+//   .then(response => response.json())
+//   .then(result => {
 
+//     console.log(result)
+//     result.forEach((getnames) => {
+//         console.log(getnames.username);
+
+//     });
+//   })
+//   .catch(error => console.log('error', error));
 
 // Display each name one after another with a 1 second delay 
-const putAllUser =(availabeNames) =>{
+const putAllUser = async (availabeNames) => {
+    const response = await fetch("http://localhost:9999/users");
+    const JSONRespons = await response.json();
+    const userNames = JSONRespons.map((userInfoOBj) => {
+      return userInfoOBj.username;
+    });
 
-  const ulOfNamesOj = document.getElementById("ulOfNames");
+    const ulOfNamesOj = document.getElementById("ulOfNames");
     ulOfNamesOj.innerHTML = ""; // Clear the list before adding new items
-  availabeNames.forEach(function(name) {
-  
-    const newListItem = document.createElement("li");
-    newListItem.innerHTML = name;
+    availabeNames.forEach(function (name) {
 
-    ulOfNamesOj.appendChild(newListItem);
- }); 
+      const newListItem = document.createElement("li");
+      newListItem.innerHTML = name;
+
+      ulOfNamesOj.appendChild(newListItem);
+    });
+
+  // Get the search input element by its ID
+  const searchUsersNameOJ = document.getElementById("searchUsersNameInput");
+
+  // Add an event listener to handle input changes in the search box
+  searchUsersNameOJ.addEventListener("input", (event) => {
+    // If the search box is empty, show all names
+    if (event.target.value === "") {
+      putAllUser(userNames);
+    } else {
+      // Otherwise, filter the names array based on the search input
+      const filterusers = names.filter((name) => {
+        // Convert both the name and search input to lowercase and replace "-" with " " for better matching
+        const namelowerwithoutSamples = name.toLowerCase().replace("-", " ");
+        const testToSearch = event.target.value.toLowerCase().replace("-", " ");
+        // Check if the name includes the search input
+        return namelowerwithoutSamples.includes(testToSearch);
+      });
+      // Display the filtered names in the list
+      putAllUser(filterusers);
+    }
+  });
+
+    console.log(userNames);
 
 };
 
-putAllUser(names);
-// // Uncomment the following code to display names with a 1 second delay
-// filteredNames.forEach(function(name, index) {
-//   setTimeout(function() {
-//     const newListItem = document.createElement("li");
-//     newListItem.textContent = name;
-//     ulOfNamesOj.appendChild(newListItem);
-//   }, index * 1000);
-// }); 
-
-// all usernames are in the form of "firstName lastName"
-// this will filter the names based on the input in the search box    
-
-// Get the search input element by its ID
-const searchUsersNameOJ = document.getElementById("searchUsersNameInput");
-
-// Add an event listener to handle input changes in the search box
-searchUsersNameOJ.addEventListener("input", (event) => {
-  // If the search box is empty, show all names
-  if (event.target.value === "") {
-    putAllUser(names);
-  } else {
-    // Otherwise, filter the names array based on the search input
-    const filterusers = names.filter((name) => {
-      // Convert both the name and search input to lowercase and replace "-" with " " for better matching
-      const namelowerwithoutSamples = name.toLowerCase().replace("-", " ");
-      const testToSearch = event.target.value.toLowerCase().replace("-", " ");
-      // Check if the name includes the search input
-      return namelowerwithoutSamples.includes(testToSearch);
-    });
-    // Display the filtered names in the list
-    putAllUser(filterusers);
-  }
-});
+putAllUser();
 
 
 
