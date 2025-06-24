@@ -45,61 +45,126 @@
     </div>
 
     <!-- Main Content -->
-    <div>
-      <label for="userList">Select User</label>
-      <select id="userList" name="User List">
-        <option value="anonymous" selected>Anonymous</option>
-        <!-- Add the new options using JS here -->
-      </select>
-    </div>
-    <div>
-      <label for="complainTitle">Complain Subject</label>
-      <input id="complainTitle" type="text" placeholder="Enter Subject of Complain">
-    </div>
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <!-- Alert container for messages -->
+          <div id="alertContainer"></div>
+          
+          <div class="card mb-4 p-3 bg-light">
+            <div class="card-header bg-primary text-white">
+              <h4><i class="bi bi-exclamation-circle me-2"></i>Submit Your Complaint</h4>
+            </div>
+            <div class="card-body">
+              <form>
+                <div class="mb-3">
+                  <label for="userList" class="form-label fw-bold">Select User</label>
+                  <select id="userList" name="User List" class="form-select">
+                    <option value="anonymous" selected>Anonymous</option>
+                    <!-- Add the new options using JS here -->
+                  </select>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="complainTitle" class="form-label fw-bold">Complaint Subject</label>
+                  <input id="complainTitle" type="text" class="form-control" placeholder="Enter Subject of Complaint">
+                </div>
 
-    <div>
-      <label for="complainComment">Comment</label>
-      <input id="complainComment" style="width: 500px; height: 100px;" type="text" placeholder="What's your Complain, Type here ...">
-    </div>
-    <div>
-      <button onclick="submitComplain()">Submit Complain</button>
+                <div class="mb-3">
+                  <label for="complainComment" class="form-label fw-bold">Comment</label>
+                  <textarea id="complainComment" class="form-control" rows="5" placeholder="What's your complaint? Type here..."></textarea>
+                </div>
+                
+                <div class="d-grid gap-2">
+                  <button type="button" class="btn btn-primary btn-lg" onclick="submitComplain()">
+                    <i class="bi bi-send me-2"></i>Submit Complaint
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   
-  <script src="./js/populateUsers.js"></script>
-  <script>
-    let selectedUserEmailId = "Anonymous";
-    document.getElementById("userList").addEventListener("change", (event) => {
-      // Handle complaint selection change
-      selectedUserEmailId = event.target.value;
-      const selectedOption = event.target.options[event.target.selectedIndex];
-    });
-
-    function submitComplain() {
-      const complainTitle = document.getElementById("complainTitle").value;
-      const complainComment = document.getElementById("complainComment").value;
-      console.log(`${selectedUserEmailId} -- ${complainTitle} -- ${complainComment}`);
-
-      // Send a POST request to the API to submit the complain. Admins can see it later
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      const raw = JSON.stringify({
-        "content": complainComment,
-        "by_user": selectedUserEmailId,
-        "title": complainTitle
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/populateUsers.js"></script>
+    <script>
+      let selectedUserEmailId = "Anonymous";
+      document.getElementById("userList").addEventListener("change", (event) => {
+        // Handle complaint selection change
+        selectedUserEmailId = event.target.value;
+        const selectedOption = event.target.options[event.target.selectedIndex];
       });
 
-      const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw
-      };
+      function showAlert(type, message) {
+        const alertContainer = document.getElementById('alertContainer');
+        const alertHTML = `
+          <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        `;
+        alertContainer.innerHTML = alertHTML;
+        
+        // Scroll to the alert
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
 
-      fetch("http://localhost:9999/complaints", requestOptions)
-        .then((response) => response.json())
-        .then((jsonResponse) => console.log(jsonResponse))
-        .catch((error) => console.error(error));
-    }
-  </script>
+      function submitComplain() {
+        const complainTitle = document.getElementById("complainTitle").value;
+        const complainComment = document.getElementById("complainComment").value;
+        
+        // Basic validation
+        if (!complainTitle.trim() || !complainComment.trim()) {
+          showAlert('danger', 'Please fill in all fields before submitting.');
+          return;
+        }
+        
+        console.log(`${selectedUserEmailId} -- ${complainTitle} -- ${complainComment}`);
+
+        // Send a POST request to the API to submit the complain. Admins can see it later
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+          "content": complainComment,
+          "by_user": selectedUserEmailId,
+          "title": complainTitle
+        });
+
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw
+        };
+
+        fetch("http://localhost:9999/complaints", requestOptions)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then((jsonResponse) => {
+            console.log(jsonResponse);
+            // Show success message with ticket ID
+            const ticketId = jsonResponse.uuid || "Unknown";
+            showAlert('success', `
+              <h4>Complaint Submitted Successfully!</h4>
+              <p>Your ticket ID is: <strong>${ticketId}</strong></p>
+              <p>Please save this ID for future reference.</p>
+            `);
+            // Clear the form
+            document.getElementById("complainTitle").value = "";
+            document.getElementById("complainComment").value = "";
+          })
+          .catch((error) => {
+            console.error(error);
+            showAlert('danger', 'Failed to submit complaint. Please try again later.');
+          });
+      }
+    </script>
   </body>
 </html>

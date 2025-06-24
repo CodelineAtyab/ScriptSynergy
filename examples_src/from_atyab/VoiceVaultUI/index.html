@@ -48,6 +48,9 @@
     <div class="container mt-4">
       <div class="row justify-content-center">
         <div class="col-md-10">
+          <!-- Alert container for error messages -->
+          <div id="errorAlertContainer"></div>
+          
           <!-- Selection Form -->
           <div class="card mb-4 p-3 bg-light">
             <div class="card-body">
@@ -85,5 +88,28 @@
     <script src="./js/populateComplains.js"></script>
     <script src="./js/populateComplainView.js"></script>
     <script src="./js/filterUserComplains.js"></script>
+    
+    <!-- Add this script to handle errors for the admin page -->
+    <script>
+      function showErrorAlert(message) {
+        const alertContainer = document.getElementById('errorAlertContainer');
+        const alertHTML = `
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        `;
+        alertContainer.innerHTML = alertHTML;
+        
+        // Scroll to the alert
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      
+      // Global error handler for fetch operations
+      window.handleFetchError = function(error) {
+        console.error(error);
+        showErrorAlert('An error occurred while fetching data. Please try again later.');
+      };
+    </script>
   </body>
 </html>
