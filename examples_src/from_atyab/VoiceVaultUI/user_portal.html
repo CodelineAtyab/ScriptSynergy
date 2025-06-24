@@ -44,6 +44,62 @@
       </nav>
     </div>
 
-    
+    <!-- Main Content -->
+    <div>
+      <label for="userList">Select User</label>
+      <select id="userList" name="User List">
+        <option value="anonymous" selected>Anonymous</option>
+        <!-- Add the new options using JS here -->
+      </select>
+    </div>
+    <div>
+      <label for="complainTitle">Complain Subject</label>
+      <input id="complainTitle" type="text" placeholder="Enter Subject of Complain">
+    </div>
+
+    <div>
+      <label for="complainComment">Comment</label>
+      <input id="complainComment" style="width: 500px; height: 100px;" type="text" placeholder="What's your Complain, Type here ...">
+    </div>
+    <div>
+      <button onclick="submitComplain()">Submit Complain</button>
+    </div>
+  
+  <script src="./js/populateUsers.js"></script>
+  <script>
+    let selectedUserEmailId = "Anonymous";
+    document.getElementById("userList").addEventListener("change", (event) => {
+      // Handle complaint selection change
+      selectedUserEmailId = event.target.value;
+      const selectedOption = event.target.options[event.target.selectedIndex];
+    });
+
+    function submitComplain() {
+      const complainTitle = document.getElementById("complainTitle").value;
+      const complainComment = document.getElementById("complainComment").value;
+      console.log(`${selectedUserEmailId} -- ${complainTitle} -- ${complainComment}`);
+
+      // Send a POST request to the API to submit the complain. Admins can see it later
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify({
+        "content": complainComment,
+        "by_user": selectedUserEmailId,
+        "title": complainTitle
+      });
+
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw
+      };
+
+      fetch("http://localhost:9999/complaints", requestOptions)
+        .then((response) => response.json())
+        .then((jsonResponse) => console.log(jsonResponse))
+        .catch((error) => console.error(error));
+    }
+  </script>
   </body>
 </html>
