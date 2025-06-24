@@ -15,11 +15,11 @@ function updateComplainView(title, complainId) {
 
   // Get complains from the API and populate the complain drop down
   fetch(`http://localhost:9999/complaints/${complainId}`)
-  .then((response) => response.json())
-  .then((jsonComplainObject) => {
-    newPara.innerHTML = jsonComplainObject.content;
-  })
-  .catch((error) => console.error(error));
+    .then((response) => response.json())
+    .then((jsonComplainObject) => {
+      newPara.innerHTML = jsonComplainObject.content;
+    })
+    .catch((error) => console.error(error));
 
   // Before we append, we should clear the div
   complainViewDivObj.innerHTML = "";

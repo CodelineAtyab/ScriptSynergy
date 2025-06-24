@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceVault</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div>
+        <h1>select names from the list </h1>
+        <select name="User List" id="userList">
+            <option value="asma" selected>All</option>
+
+        </select>
+    </div>
+    <div>
+        <h1>select complaints from the list</h1>
+        <select name="Complaint List" id="complaintList">
+            <option value="all" selected>All</option>
+        </select>
+    </div>
+
+
+    <div id="CompaintViewDiv">
+
+    </div>
+
+
+    <script src="./js/getusersdata.js"></script>
+    <script src="./js/getCoplaints.js"></script>
+    <script src="./js/complaintsView.js"></script>
+
+</body>
+
+</html>
