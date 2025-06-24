@@ -1,42 +1,115 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VoiceVault</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css/styles.css" />
   </head>
 
   <body>
-    <div>
-      <label>Select User</label>
-      <select id="userList" name="User List">
-        <option value="all" selected>All</option>
-        <!-- Add the new options using JS here -->
-      </select>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-soundwave me-2"></i>VoiceVault
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="./user_portal.html">Complain Portal</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./index.html">Admin Panel</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Breadcrumbs -->
+    <div class="container mt-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Complain Portal</li>
+        </ol>
+      </nav>
     </div>
 
-    <div>
-      <label>Select Complaint</label>
-      <select id="complaintList" name="Complaint List">
-        <!-- Add the new options using JS here -->
-      </select>
+    <!-- Main Content -->
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <!-- Alert container for error messages -->
+          <div id="errorAlertContainer"></div>
+          
+          <!-- Selection Form -->
+          <div class="card mb-4 p-3 bg-light">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="userList" class="form-label fw-bold">Select User</label>
+                  <select id="userList" name="User List" class="form-select form-select-lg">
+                    <option value="all" selected>All</option>
+                    <!-- Add the new options using JS here -->
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="complaintList" class="form-label fw-bold">Select Complaint</label>
+                  <select id="complaintList" name="Complaint List" class="form-select form-select-lg">
+                    <!-- Add the new options using JS here -->
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Complaint View -->
+          <div class="card complaint-card">
+            <div class="card-body" id="complainViewDiv">
+              <!-- Complaint content will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div id="complainViewDiv">
-      <!-- <h1>Complaint Information</h2>
-      <h2>Title comes here</h3>
-      <h3>Id comes here</h4>
-      <p>
-        Complain should come here !
-        In this para
-        ...
-      </p> -->
-    </div>
-
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/populateUsers.js"></script>
     <script src="./js/populateComplains.js"></script>
     <script src="./js/populateComplainView.js"></script>
     <script src="./js/filterUserComplains.js"></script>
+    
+    <!-- Add this script to handle errors for the admin page -->
     <script>
+      function showErrorAlert(message) {
+        const alertContainer = document.getElementById('errorAlertContainer');
+        const alertHTML = `
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        `;
+        alertContainer.innerHTML = alertHTML;
+        
+        // Scroll to the alert
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
       
+      // Global error handler for fetch operations
+      window.handleFetchError = function(error) {
+        console.error(error);
+        showErrorAlert('An error occurred while fetching data. Please try again later.');
+      };
     </script>
   </body>
 </html>

@@ -1,0 +1,14 @@
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+body {
+  background-color: #f8f9fa;
+}
+.complaint-card {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+.complaint-card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
