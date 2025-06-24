@@ -45,6 +45,9 @@ const names = [
   "Jessica Wilson"
 ];
 
+// Declare userNames in the global scope
+// let userNames = [];
+
 //this creates a list of names that contain "al" in them
 // regardless of case
 // and appends them to the unordered list with id "ulOfNames" 
@@ -68,14 +71,8 @@ const names = [
 //   })
 //   .catch(error => console.log('error', error));
 
-// Display each name one after another with a 1 second delay 
+// Display each name one 
 const putAllUser = async (availabeNames) => {
-    const response = await fetch("http://localhost:9999/users");
-    const JSONRespons = await response.json();
-    const userNames = JSONRespons.map((userInfoOBj) => {
-      return userInfoOBj.username;
-    });
-
     const ulOfNamesOj = document.getElementById("ulOfNames");
     ulOfNamesOj.innerHTML = ""; // Clear the list before adding new items
     availabeNames.forEach(function (name) {
@@ -85,8 +82,21 @@ const putAllUser = async (availabeNames) => {
 
       ulOfNamesOj.appendChild(newListItem);
     });
+};
 
-  // Get the search input element by its ID
+async function fetchUsersFromAPI() {
+  const response = await fetch("http://localhost:9999/users");
+  const JSONRespons = await response.json();
+  userNames = JSONRespons.map((userInfoOBj) => {
+    return userInfoOBj.username;
+  });
+  putAllUser(userNames);
+}
+
+//call function 
+fetchUsersFromAPI();
+
+// Get the search input element by its ID
   const searchUsersNameOJ = document.getElementById("searchUsersNameInput");
 
   // Add an event listener to handle input changes in the search box
@@ -96,7 +106,7 @@ const putAllUser = async (availabeNames) => {
       putAllUser(userNames);
     } else {
       // Otherwise, filter the names array based on the search input
-      const filterusers = names.filter((name) => {
+      const filterusers = userNames.filter((name) => {
         // Convert both the name and search input to lowercase and replace "-" with " " for better matching
         const namelowerwithoutSamples = name.toLowerCase().replace("-", " ");
         const testToSearch = event.target.value.toLowerCase().replace("-", " ");
@@ -108,11 +118,9 @@ const putAllUser = async (availabeNames) => {
     }
   });
 
-    console.log(userNames);
 
-};
 
-putAllUser();
+
 
 
 
