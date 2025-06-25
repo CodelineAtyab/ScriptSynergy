@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Speed Type Test</title>
+
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <h1>Sentence to Type</h1>
+    <label>Word Count: <span id="wordCount">0</span></label>
+    <label> -- </label>
+    <label>Correct Words So Far: <span id="correctWordCount">0</span></label>
+    <h2 id="fixedSentence"></h2>
+    <h2 id="result"></h2>
+    <input id="userInputArea" class="type-window" type="text" placeholder="Type the sentence correctly here ..." />
+    <script src="./jquery-3.7.1.min.js"></script>
+    <script>
+      const testSentence = "The Quick Brown Fox Jumps Over a lazy dog";
+      const listOfTestSentWords = testSentence.split(" ");
+
+      $("#fixedSentence").html(`Type this in Correct Order: <br /> ${testSentence}`);
+
+      $("#userInputArea").on("input", function () {
+        const textInsideBox = $(this).val();
+        $("#wordCount").html(`${textInsideBox.length}`);
+
+        const textInsideBoxWords = textInsideBox.split(" ").filter(e => e !== '');
+        const correctWords = textInsideBoxWords.filter((givenWord, index) => {
+          return givenWord == listOfTestSentWords[index];
+        });
+
+        const wrongWords = textInsideBoxWords.filter((givenWord, index) => {
+          return givenWord != listOfTestSentWords[index];
+        });
+
+        const spansOfWrongWords = wrongWords.map((word) => {
+          const newSpan = document.createElement("span");
+          newSpan.innerHTML = word;
+          newSpan.className = "red-word";
+          return newSpan;
+        });
+
+        console.log(correctWords);
+        console.log(wrongWords);
+        $("#correctWordCount").html(`${correctWords.length}`)
+
+        // Check if all words are correct and disable the input box
+        // document.getElementById("#userInputArea").disabled = true;
+        if ((correctWords.length + wrongWords.length) > listOfTestSentWords.length) {
+          $(this).prop('disabled', true);
+          spansOfWrongWords.forEach(currSpanWrongWord => {
+            $("#result").append(currSpanWrongWord);
+            const spaceSpan = document.createElement("span");
+            spaceSpan.innerHTML = " -- ";
+            $("#result").append(spaceSpan);
+            $("#fixedSentence").fadeOut(3000);
+          });
+        }
+        
+      });
+    </script>
+  </body>
+</html>
