@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceVault</title>
+</head>
+<body>
+    <h1>select names from the list </h1>
+    <select name="User List" id="userList">
+        <option value="asma" selected >Asma</option>
+        <option value="qais" >Qais</option>
+        <option value="atyab">Atyab</option>
+        <option value="sarah">Sarah</option>
+        <option value="ali">Ali</option>
+
+    </select>
+
+    <script>
+        const userList = document.getElementById('userList');
+ 
+//fetching data from the API
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+            fetch("http://localhost:9999/users", requestOptions)
+            .then(response => response.json())
+            .then((JSONList) => {
+                console.log(JSONList);
+                //convert the list of the json to list of strings the user name
+                JSONList.forEach ((CurrUserObj)=>{
+                    console.log(CurrUserObj);
+                    const newOption = document.createElement('option');
+                    newOption.textContent = CurrUserObj.username;
+                    newOption.value = CurrUserObj.email;
+                    userList.appendChild(newOption);
+
+                })
+            })
+            .catch(error => console.log('error', error));
+        </script>
+</body>
+</html>
