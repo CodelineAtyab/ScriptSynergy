@@ -50,3 +50,12 @@ let display = document.getElementById("nameDisplay");
 window.onload = showNameInTurns;
 
    // task 2: 
+function newFunction(name1, name2) {
+  name1 = "qais";
+  name2 = "alamrani";
+  const fullName = name1 + " " + name2;
+  console.log(fullName);
+}
+
+newFunction();
+        
