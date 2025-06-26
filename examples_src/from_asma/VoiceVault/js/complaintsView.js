@@ -1,5 +1,6 @@
 const complViewDive = document.getElementById("CompaintViewDiv");
 document.getElementById("complaintList").addEventListener("change", (event) => {
+
     console.log(event);
     const SelectedValue = event.target.value;
     const selectedOption = event.target.options[event.target.selectedIndex];
@@ -14,6 +15,7 @@ document.getElementById("complaintList").addEventListener("change", (event) => {
     const heading2 = document.createElement("h2");
     heading2.innerHTML = selectedOption.text;
 
+
     const compID = document.createElement("h3");
     compID.innerHTML = SelectedValue;
     const compcontent = document.createElement("p");
@@ -23,11 +25,14 @@ document.getElementById("complaintList").addEventListener("change", (event) => {
         .then((jsonComplainObject) => {
             compcontent.innerHTML = jsonComplainObject.content;
         })
-        .catch((error) => console.error(error)); // <-- moved inside the event listener
+        .catch((error) => console.error(error));
 
     complViewDive.innerHTML = "";
     complViewDive.appendChild(heading1);
     complViewDive.appendChild(heading2);
     complViewDive.appendChild(compID);
     complViewDive.appendChild(compcontent);
+
 });
+
+

@@ -5,10 +5,23 @@ document.getElementById("userList").addEventListener("change", (event) => {
     const selectedOption = event.target.options[event.target.selectedIndex];
     console.log(SelectedValue);
 
-    complList.for
+    const filteredcomplains = Array.from(complList).filter((OptionObj) => {
+        //console.log(OptionObj.originalObj.by_user, SelectedValue);
+
+        if (OptionObj.originalObj.by_user === SelectedValue) {
+        return true;
+        }
+    });
+    console.log(filteredcomplains);
+
+    
+    Array.from(complList).forEach((currComplainOp)=>{
+        complList.appendChild(currComplainOp);
+    });// Clear the existing options
+    
     // console.log("Selected value:", {
     //     value: SelectedValue,
-    //     text: selectedOption.text
+    //     text: selectedOption.text 
     
 
     // const heading1 = document.createElement("h1");
