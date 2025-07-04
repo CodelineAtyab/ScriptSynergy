@@ -1,3 +1,35 @@
+        body {
+            background: linear-gradient(135deg, #ffe0f0 0%, #f8e1ff 100%) !important;
+        }
+
+        .navbar-feminine {
+            background: linear-gradient(90deg, #ff69b4 0%, #ffb6c1 100%) !important;
+        }
+
+        .breadcrumb-feminine {
+            background-color: #fff0f6 !important;
+        }
+
+        .card-feminine {
+            border: 1px solid #ffb6c1 !important;
+            background: #fffafd !important;
+        }
+
+        .card-title,
+        .navbar-brand,
+        .nav-link.active {
+            color: #d63384 !important;
+        }
+
+        .btn-feminine {
+            background-color: #ff69b4 !important;
+            color: white    !important ;
+        }
+
+        .form-select:focus {
+            border-color: #ff69b4 !important;
+            box-shadow: 0 0 0 0.2rem rgba(255, 105, 180, .25) !important;
+        }
 body {
     font-family: Arial, sans-serif;
     background: #f5f7fa;

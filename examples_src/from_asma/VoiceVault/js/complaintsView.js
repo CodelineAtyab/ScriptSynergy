@@ -9,7 +9,7 @@ function populateComplaintView(title, ComplainID, complainContent) {
     cardBody.className = "card-body";
 
     const heading1 = document.createElement("h5");
-    heading1.className = "card-title text-primary fw-bold mb-3";
+    heading1.className = "card-title  fw-bold mb-3";
     heading1.innerHTML = "Complaint Information";
 
     const heading2 = document.createElement("h6");

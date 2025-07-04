@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceVault</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-feminine shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <!-- SVG Logo or Text Logo -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#d63384" class="me-2"
+                    viewBox="0 0 16 16">
+                    <ellipse cx="8" cy="8" rx="8" ry="8" fill="#ffb6c1" />
+                    <ellipse cx="8" cy="8" rx="4" ry="4" fill="#ff69b4" />
+                </svg>
+                VoiceVault
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link " href="./index.html">Admin Panel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./userPortal.html">Complaint Portal</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="breadcrumb-feminine py-2 shadow-sm">
+        <div class="container">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="./index.html" style="color:#d63384;">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page" style="color:#d63384;"><a
+                        href="./userPortal.html" style="color:#d63384;"> Complaints Page</a></li>
+            </ol>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="card card-feminine shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4 text-center" style="color:#d63384;">Submit a New Complaint</h4>
+                        <form>
+                            <div class="mb-3">
+                                <label for="userList" class="form-label fs-5 fw-semibold" style="color:#d63384;">Select User
+                                </label>
+                                <select name="User List" id="userList" class="form-select form-select-lg">
+                                    <option value="all" selected>Anonymous</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="complainTitle" class="form-label" style="color:#d63384;">Complaint Title</label>
+                                <input id="complainTitle" type="text" class="form-control form-control-lg"
+                                    placeholder="Enter Complaint Title">
+                            </div>
+                            <div class="mb-3">
+                                <label for="complainComment" class="form-label" style="color:#d63384;">Complaint Comment</label>
+                                <textarea id="complainComment" class="form-control" rows="4"
+                                    placeholder="Enter your Complaint Comment"></textarea>
+                            </div>
+                            <div class="d-grid">
+                                <button id="submitComplaint" type="button" class="btn btn-lg btn-feminine"
+                                    onclick="submitComplaint()">Submit Complaint</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle CDN (for navbar collapse, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/getusersdata.js"></script>
+    <script src="./js/addUser.js"></script>
+
+</body>
+
+</html>
