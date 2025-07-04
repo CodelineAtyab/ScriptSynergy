@@ -12,48 +12,21 @@ document.getElementById("userList").addEventListener("change", (event) => {
             return true;
         }
     });
-    // console.log(filteredcomplains);
+    console.log(filteredcomplains);
+    // const filteredcomplains = populateComplaintView(SelectedValue);
 
-    Array.from(complList).forEach((currComplainOp) => {
-        currComplainOp.hidden = true;
-    });// Clear the existing options
+    hideComplainsOps();
 
-    Array.from(filteredcomplains).forEach((currComplainOp) => {
-        currComplainOp.hidden = false;
 
-    });
-    if (filteredcomplains[0].hasAttribute("selected")) {
-        filteredcomplains[0].selected = true;
+    showSpecificComplainOptions(filteredcomplains);
+
+    if (filteredcomplains.length > 0 && filteredcomplains[0] instanceof HTMLOptionElement) {
+        // filteredcomplains[0].selected = true;
         populateComplaintView(filteredcomplains[0].originalObj.title, filteredcomplains[0].originalObj.uuid);
+        filteredcomplains[0].selected = true;
+
     }
-    
 
 
-    // console.log("Selected value:", {
-    //     value: SelectedValue,
-    //     text: selectedOption.text 
 
-
-    // const heading1 = document.createElement("h1");
-    // heading1.innerHTML = "Complaints View Information";
-
-    // const heading2 = document.createElement("h2");
-    // heading2.innerHTML = selectedOption.text;
-
-    // const compID = document.createElement("h3");
-    // compID.innerHTML = SelectedValue;
-    // const compcontent = document.createElement("p");
-
-    // fetch(`http://localhost:9999/complaints/${SelectedValue}`)
-    //     .then((response) => response.json())
-    //     .then((jsonComplainObject) => {
-    //         compcontent.innerHTML = jsonComplainObject.content;
-    //     })
-    //     .catch((error) => console.error(error)); // <-- moved inside the event listener
-
-    // complViewDive.innerHTML = "";
-    // complViewDive.appendChild(heading1);
-    // complViewDive.appendChild(heading2);
-    // complViewDive.appendChild(compID);
-    // complViewDive.appendChild(compcontent);
 });

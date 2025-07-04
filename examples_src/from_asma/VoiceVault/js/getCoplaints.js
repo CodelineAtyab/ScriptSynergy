@@ -29,3 +29,18 @@ fetch("http://localhost:9999/complaints")
     })
     .catch((error) => console.error(error));
 
+
+
+
+function hideComplainsOps(){
+ Array.from(complList).forEach((currComplainOp) => {
+        currComplainOp.hidden = true;
+    });// Clear the existing options
+
+}
+function showSpecificComplainOptions(filteredcomplains) {
+    Array.from(filteredcomplains).forEach((currComplainOp) => {
+        currComplainOp.hidden = false;
+
+    });
+}
