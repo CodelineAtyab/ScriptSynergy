@@ -1,4 +1,4 @@
-let selectedUserEmailId = "Anonymous";
+       let selectedUserEmailId = "Anonymous";
 document.getElementById("userList").addEventListener("change", (event) => {
     // console.log(event);
     selectedUserEmailId = event.target.value;
@@ -34,3 +34,6 @@ function submitComplaint() {
         .then((result) => console.log(result))
         .catch((error) => console.error(error));
 } 
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("submitComplaint").addEventListener("click", submitComplaint);
+});
