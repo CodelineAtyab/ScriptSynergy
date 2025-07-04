@@ -1,6 +1,6 @@
 //onst complViewDive = document.getElementById("CompaintViewDiv");
 document.getElementById("userList").addEventListener("change", (event) => {
-   // console.log(event);
+    // console.log(event);
     const SelectedValue = event.target.value;
     const selectedOption = event.target.options[event.target.selectedIndex];
     console.log(SelectedValue);
@@ -8,21 +8,31 @@ document.getElementById("userList").addEventListener("change", (event) => {
     const filteredcomplains = Array.from(complList).filter((OptionObj) => {
         //console.log(OptionObj.originalObj.by_user, SelectedValue);
 
-        if (OptionObj.originalObj.by_user === SelectedValue) {
-        return true;
+        if (OptionObj.originalObj && OptionObj.originalObj.by_user == SelectedValue) {
+            return true;
         }
     });
-    console.log(filteredcomplains);
+    // console.log(filteredcomplains);
 
-    
-    Array.from(complList).forEach((currComplainOp)=>{
-        complList.appendChild(currComplainOp);
+    Array.from(complList).forEach((currComplainOp) => {
+        currComplainOp.hidden = true;
     });// Clear the existing options
+
+    Array.from(filteredcomplains).forEach((currComplainOp) => {
+        currComplainOp.hidden = false;
+
+    });
+    if (filteredcomplains[0].hasAttribute("selected")) {
+        filteredcomplains[0].selected = true;
+        populateComplaintView(filteredcomplains[0].originalObj.title, filteredcomplains[0].originalObj.uuid);
+    }
     
+
+
     // console.log("Selected value:", {
     //     value: SelectedValue,
     //     text: selectedOption.text 
-    
+
 
     // const heading1 = document.createElement("h1");
     // heading1.innerHTML = "Complaints View Information";
