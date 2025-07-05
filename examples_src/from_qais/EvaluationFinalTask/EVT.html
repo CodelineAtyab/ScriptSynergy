@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Management System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1em;
+        }
+
+        .filters-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .filters-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .complaints-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .complaints-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #f44336, #d32f2f);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(244, 67, 54, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, #ff9800, #f57c00);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 152, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #5a6268);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+        }
+
+        .complaints-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .complaints-table th,
+        .complaints-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .complaints-table th {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .complaints-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-open {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-in-progress {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .status-resolved {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+
+        .status-closed {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+        }
+
+        .loading i {
+            font-size: 2em;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .no-results i {
+            font-size: 3em;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+
+        .results-count {
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .user-info {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .complaint-description {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .complaint-description:hover {
+            white-space: normal;
+            overflow: visible;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                min-width: auto;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .form-row .form-group {
+                min-width: auto;
+            }
+
+            .complaints-table {
+                font-size: 14px;
+            }
+
+            .complaints-table th,
+            .complaints-table td {
+                padding: 10px 8px;
+            }
+
+            .btn {
+                font-size: 14px;
+                padding: 10px 16px;
+            }
+        }
+
+    </style>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-clipboard-check"></i> Complaint Management System</h1>
+            <p>Manage and track customer complaints efficiently</p>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <h2><i class="fas fa-filter"></i> Filter Complaints</h2>
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="filter-user">Filter by User</label>
+                    <select id="filter-user">
+                        <option value="">All Users</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-title">Search by Title</label>
+                    <input type="text" id="filter-title" placeholder="Enter complaint title...">
+                </div>
+                <div class="filter-group">
+                    <label for="filter-status">Filter by Status</label>
+                    <select id="filter-status">
+                        <option value="">All Statuses</option>
+                        <option value="open">Open</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>&nbsp;</label>
+                    <button class="btn btn-secondary" id="clear-filters">
+                        <i class="fas fa-times"></i> Clear Filters
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complaints Section -->
+        <div class="complaints-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2><i class="fas fa-clipboard-list"></i> All Complaints</h2>
+                <button class="btn btn-primary" id="refresh-complaints">
+                    <i class="fas fa-refresh"></i> Refresh
+                </button>
+            </div>
+            
+            <div id="complaints-loading" class="loading">
+                <i class="fas fa-spinner"></i>
+                <p>Loading complaints...</p>
+            </div>
+
+            <div id="complaints-content" style="display: none;">
+                <div id="results-count" class="results-count"></div>
+                <div id="complaints-table-container">
+                    <table class="complaints-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="complaints-tbody">
+                        </tbody>
+                    </table>
+                </div>
+                <div id="no-results" class="no-results" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <h3>No complaints found</h3>
+                    <p>Try adjusting your filters or search criteria.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-complaint-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3><i class="fas fa-edit"></i> Edit Complaint</h3>
+            <div id="edit-complaint-alert"></div>
+            <form id="edit-complaint-form">
+                <input type="hidden" id="edit-complaint-id">
+                <div class="form-group">
+                    <label for="edit-complaint-user">User</label>
+                    <select id="edit-complaint-user" required>
+                        <option value="">Select User</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-complaint-title">Complaint Title</label>
+                    <input type="text" id="edit-complaint-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-complaint-description">Description</label>
+                    <textarea id="edit-complaint-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-complaint-status">Status</label>
+                    <select id="edit-complaint-status" required>
+                        <option value="open">Open</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Update Complaint
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="$('#edit-complaint-modal').hide()">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-complaint-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3><i class="fas fa-exclamation-triangle"></i> Confirm Delete</h3>
+            <p>Are you sure you want to delete this complaint? This action cannot be undone.</p>
+            <div style="margin-top: 20px;">
+                <button id="confirm-delete-complaint" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Delete Complaint
+                </button>
+                <button id="cancel-delete-complaint" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+   <script>
+
+     const API_BASE_URL = 'http://localhost:9999';
+        let allComplaints = [];
+        let allUsers = [];
+        let filteredComplaints = [];
+        let complaintToDelete = null;
+
+        // Initialize the application
+        $(document).ready(function() {
+            loadUsers();
+            loadComplaints();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Filter controls
+            $('#filter-user, #filter-status').change(function() {
+                applyFilters();
+            });
+
+            $('#filter-title').on('input', function() {
+                applyFilters();
+            });
+
+            $('#clear-filters').click(function() {
+                clearFilters();
+            });
+
+            $('#refresh-complaints').click(function() {
+                loadComplaints();
+            });
+
+            // Edit complaint form
+            $('#edit-complaint-form').submit(function(e) {
+                e.preventDefault();
+                updateComplaint();
+            });
+
+            // Modal controls
+            $('.close').click(function() {
+                $(this).closest('.modal').hide();
+            });
+
+            $('#cancel-delete-complaint').click(function() {
+                $('#delete-complaint-modal').hide();
+            });
+
+            $('#confirm-delete-complaint').click(function() {
+                deleteComplaint(complaintToDelete);
+                $('#delete-complaint-modal').hide();
+            });
+
+            // Close modal when clicking outside
+            $(window).click(function(e) {
+                if ($(e.target).hasClass('modal')) {
+                    $('.modal').hide();
+                }
+            });
+        }
+
+        // Load all users
+        function loadUsers() {
+            $.ajax({
+                url: `${API_BASE_URL}/users`,
+                method: 'GET',
+                success: function(data) {
+                    allUsers = data;
+                    populateUserDropdowns();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading users:', error);
+                }
+            });
+        }
+
+        // Populate user dropdowns
+        function populateUserDropdowns() {
+            const filterSelect = $('#filter-user');
+            const editSelect = $('#edit-complaint-user');
+            
+            filterSelect.find('option:not(:first)').remove();
+            editSelect.find('option:not(:first)').remove();
+            
+            allUsers.forEach(user => {
+                const option = `<option value="${user.id}">${user.name} (${user.email})</option>`;
+                filterSelect.append(option);
+                editSelect.append(option);
+            });
+        }
+
+        // Load all complaints
+        function loadComplaints() {
+            $('#complaints-loading').show();
+            $('#complaints-content').hide();
+            
+            $.ajax({
+                url: `${API_BASE_URL}/complaints`,
+                method: 'GET',
+                success: function(data) {
+                    allComplaints = data;
+                    filteredComplaints = data;
+                    displayComplaints(data);
+                    updateResultsCount(data.length);
+                    $('#complaints-loading').hide();
+                    $('#complaints-content').show();
+                },
+                error: function(xhr, status, error) {
+                    $('#complaints-loading').hide();
+                    showAlert('complaints-content', 'Error loading complaints: ' + error, 'error');
+                }
+            });
+        }
+
+        // Display complaints in table
+        function displayComplaints(complaints) {
+            const tbody = $('#complaints-tbody');
+            tbody.empty();
+            
+            if (complaints.length === 0) {
+                $('#complaints-table-container').hide();
+                $('#no-results').show();
+                return;
+            }
+
+            $('#complaints-table-container').show();
+            $('#no-results').hide();
+            
+            complaints.forEach(complaint => {
+                const user = allUsers.find(u => u.id === complaint.userId);
+                const userName = user ? user.name : 'Unknown User';
+                const userEmail = user ? user.email : '';
+                const userPhone = user ? user.phone : '';
+                
+                const createdDate = new Date(complaint.createdAt).toLocaleDateString();
+                const statusClass = `status-${complaint.status.replace(' ', '-')}`;
+                
+                const row = `
+                    <tr>
+                        <td>${complaint.id}</td>
+                        <td>
+                            <strong>${userName}</strong>
+                            <div class="user-info">
+                                <i class="fas fa-envelope"></i> ${userEmail}<br>
+                                <i class="fas fa-phone"></i> ${userPhone}
+                            </div>
+                        </td>
+                        <td><strong>${complaint.title}</strong></td>
+                        <td>
+                            <div class="complaint-description" title="${complaint.description}">
+                                ${complaint.description}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge ${statusClass}">
+                                ${complaint.status}
+                            </span>
+                        </td>
+                        <td>${createdDate}</td>
+                        <td>
+                            <button class="btn btn-warning" onclick="editComplaint(${complaint.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger" onclick="confirmDeleteComplaint(${complaint.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const userFilter = $('#filter-user').val();
+            const titleFilter = $('#filter-title').val().toLowerCase();
+            const statusFilter = $('#filter-status').val();
+            
+            filteredComplaints = allComplaints.filter(complaint => {
+                const matchesUser = !userFilter || complaint.userId == userFilter;
+                const matchesTitle = !titleFilter || complaint.title.toLowerCase().includes(titleFilter);
+                const matchesStatus = !statusFilter || complaint.status === statusFilter;
+                
+                return matchesUser && matchesTitle && matchesStatus;
+            });
+            
+            displayComplaints(filteredComplaints);
+            updateResultsCount(filteredComplaints.length);
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            $('#filter-user').val('');
+            $('#filter-title').val('');
+            $('#filter-status').val('');
+            filteredComplaints = allComplaints;
+            displayComplaints(filteredComplaints);
+            updateResultsCount(filteredComplaints.length);
+        }
+
+        // Update results count
+        function updateResultsCount(count) {
+            const total = allComplaints.length;
+            const countText = count === total ? 
+                `Showing all ${total} complaints` : 
+                `Showing ${count} of ${total} complaints`;
+            $('#results-count').text(countText);
+        }
+
+        // Edit complaint
+        function editComplaint(complaintId) {
+            const complaint = allComplaints.find(c => c.id === complaintId);
+            if (complaint) {
+                $('#edit-complaint-id').val(complaint.id);
+                $('#edit-complaint-user').val(complaint.userId);
+                $('#edit-complaint-title').val(complaint.title);
+                $('#edit-complaint-description').val(complaint.description);
+                $('#edit-complaint-status').val(complaint.status);
+                $('#edit-complaint-modal').show();
+            }
+        }
+
+        // Update complaint
+        function updateComplaint() {
+            const complaintId = $('#edit-complaint-id').val();
+            const formData = {
+                userId: parseInt($('#edit-complaint-user').val()),
+                title: $('#edit-complaint-title').val(),
+                description: $('#edit-complaint-description').val(),
+                status: $('#edit-complaint-status').val()
+            };
+
+            $.ajax({
+                url: `${API_BASE_URL}/complaints/${complaintId}`,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function(data) {
+                    showAlert('edit-complaint-alert', 'Complaint updated successfully!', 'success');
+                    setTimeout(() => {
+                        $('#edit-complaint-modal').hide();
+                        loadComplaints();
+                    }, 1500);
+                },
+                error: function(xhr, status, error) {
+                    showAlert('edit-complaint-alert', 'Error updating complaint: ' + error, 'error');
+                }
+            });
+        }
+
+        // Confirm delete complaint
+        function confirmDeleteComplaint(complaintId) {
+            complaintToDelete = complaintId;
+            $('#delete-complaint-modal').show();
+        }
+
+        // Delete complaint
+        function deleteComplaint(complaintId) {
+            $.ajax({
+                url: `${API_BASE_URL}/complaints/${complaintId}`,
+                method: 'DELETE',
+                success: function(data) {
+                    loadComplaints();
+                    showAlert('complaints-content', 'Complaint deleted successfully!', 'success');
+                },
+                error: function(xhr, status, error) {
+                    showAlert('complaints-content', 'Error deleting complaint: ' + error, 'error');
+                }
+            });
+        }
+
+        // Show alert message
+        function showAlert(containerId, message, type) {
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            const alertHtml = `<div class="alert ${alertClass}">${message}</div>`;
+            
+            $(`#${containerId}`).html(alertHtml);
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                $(`#${containerId}`).empty();
+            }, 5000);
+        }
+   </script>
+</body>
+</html>
